@@ -6,7 +6,6 @@ import 'graphiql/graphiql.min.css';
 import GraphiQLExplorer from 'graphiql-explorer';
 
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import InputLabel from '@mui/material/InputLabel';
@@ -21,6 +20,7 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
+import Paper from '@mui/material/Paper';
 
 import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from "rehype-sanitize";
@@ -138,9 +138,9 @@ const App = () => {
     </AppBar>
     <Box className="gutter"  sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs value={value} onChange={handleChange} aria-label="Build Graphics">
-          <Tab style={{flexGrow: 1}} label="Query & Filter" {...a11yProps(0)} />
-          <Tab style={{flexGrow: 1}} label="Write a Story" {...a11yProps(1)} />
-          <Tab style={{flexGrow: 1}} label="Configure Chart" {...a11yProps(2)} />
+          <Tab style={{flexGrow: 1}} label="1. Query & Filter" {...a11yProps(0)} />
+          <Tab style={{flexGrow: 1}} label="2. Configure Chart" {...a11yProps(1)} />
+          <Tab style={{flexGrow: 1}} label="3. Write a Story" {...a11yProps(2)} />
         <Button variant="outlined" startIcon={<SaveIcon />}>
           Save
         </Button>
@@ -178,20 +178,6 @@ const App = () => {
 
     <TabPanel value={value} index={1}>
       <div className='gutter container'>
-        <div style={{height: '100%', width: '100%', marginTop: '26px'}}>
-          <MDEditor
-            value={story}
-            onChange={setStory}
-            previewOptions={{
-              rehypePlugins: [[rehypeSanitize]],
-            }}
-          />
-        </div>
-      </div>
-    </TabPanel>
-
-    <TabPanel value={value} index={2}>
-      <div className='gutter container'>
         <div style={{height: '100%', width: '100%'}}>
           <Box style={{ }}>
             <FormControl style={{ marginTop: '26px' }}>
@@ -217,6 +203,25 @@ const App = () => {
         </div>
       </div>
     </TabPanel>
+
+    <TabPanel value={value} index={2}>
+      <div className='gutter container'>
+        <div style={{height: '100%', width: '100%', marginTop: '26px'}}>
+          <MDEditor
+            value={story}
+            onChange={setStory}
+            previewOptions={{
+              rehypePlugins: [[rehypeSanitize]],
+            }}
+          />
+          <Paper className='story' elevation={3} style={{marginTop: '26px', paddingBottom: '46px', marginBottom: '36px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+	    <ChartSelector hideEditor={true} chartType={chartType} data={filteredData} config={config} setConfig={setConfig} />
+            <MDEditor.Markdown source={story} style={{ whiteSpace: 'pre-wrap' }} />
+          </Paper>
+        </div>
+      </div>
+    </TabPanel>
+
   </Box>)
 };
 

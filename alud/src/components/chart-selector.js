@@ -61,7 +61,7 @@ class ErrorBoundary extends React.Component {
 }
 
 const ChartSelector = (props) => {
-  const {chartType, data, config, setConfig} = props;
+  const {hideEditor, chartType, data, config, setConfig} = props;
   const [hasError, setHasError] = useState(false);
   let Chart;
 
@@ -85,6 +85,11 @@ const ChartSelector = (props) => {
       console.log("Failed generating chart");
       console.log(e);
     }
+
+    if (hideEditor) return (<div style={{ width: '60%' }}>
+      {Chart}
+      </div>);
+
     return <div style={{display: 'grid', 'grid-template-columns': '64px [first] 47% 20px [end] 40%'}}>
       {Chart}
       <ConfigEditor style={{ 'grid-column-start': 'end' }} config={config} setConfig={setConfig} />
