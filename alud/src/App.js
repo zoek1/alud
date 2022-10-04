@@ -84,12 +84,25 @@ const App = () => {
   const [config, setConfig] = useState({responsive: true})
   const [story, setStory] = useState("# Awesome Tezos Story");
   const [value, setValue] = useState(0);
- 
+  const [hasError, setHasError] = useState(false);
+
   const graphiQLRef = useRef(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const onSave = async () => {
+    const address = 'tz0000000000000000000000';
+    const hash = '908a9s999a9999a';
+    const storyData = {address, hash, config, story, chartType, filteredData, filterQuery, query};
+    if (!hasError && chartType && story !== '' && JSON.stringify(filteredData) !== '{}') {
+      console.log(storyData);
+    } else {
+      console.log('Don\'t save due to missing fields');
+    }
+
+  }
 
   useEffect(() => {
     fetcher({
@@ -141,7 +154,7 @@ const App = () => {
           <Tab style={{flexGrow: 1}} label="1. Query & Filter" {...a11yProps(0)} />
           <Tab style={{flexGrow: 1}} label="2. Configure Chart" {...a11yProps(1)} />
           <Tab style={{flexGrow: 1}} label="3. Write a Story" {...a11yProps(2)} />
-        <Button variant="outlined" startIcon={<SaveIcon />}>
+        <Button variant="outlined" startIcon={<SaveIcon />} onClick={onSave} >
           Save
         </Button>
       </Tabs>
@@ -198,7 +211,7 @@ const App = () => {
 	        <MenuItem value='scatter'>Scatter Chart</MenuItem>
 	    </Select>
             </FormControl>
-	    <ChartSelector chartType={chartType} data={filteredData} config={config} setConfig={setConfig} />
+	    <ChartSelector chartType={chartType} data={filteredData} config={config} setConfig={setConfig} hasError={hasError} setHasError={setHasError} />
           </Box>
         </div>
       </div>
@@ -215,7 +228,7 @@ const App = () => {
             }}
           />
           <Paper className='story' elevation={3} style={{marginTop: '26px', paddingBottom: '46px', marginBottom: '36px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-	    <ChartSelector hideEditor={true} chartType={chartType} data={filteredData} config={config} setConfig={setConfig} />
+	    <ChartSelector hideEditor={true} chartType={chartType} data={filteredData} config={config} setConfig={setConfig} hasError={hasError} setHasError={setHasError} />
             <MDEditor.Markdown source={story} style={{ whiteSpace: 'pre-wrap' }} />
           </Paper>
         </div>

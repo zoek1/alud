@@ -61,8 +61,7 @@ class ErrorBoundary extends React.Component {
 }
 
 const ChartSelector = (props) => {
-  const {hideEditor, chartType, data, config, setConfig} = props;
-  const [hasError, setHasError] = useState(false);
+  const {hideEditor, chartType, data, config, setConfig, hasError, setHasError } = props;
   let Chart;
 
   useEffect(()=> {
