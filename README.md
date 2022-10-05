@@ -51,6 +51,8 @@ On your browser open [http://localhost:3000](http://localhost:3000)
 
 ## Demo
 
+Use this snippet to customize your chart https://gist.github.com/zoek1/6b363910f79abd3c92c9b4c706f84880
+
 https://www.loom.com/share/daa987b8bc7447a085faf6b73e6d2a36
 
 ## License
