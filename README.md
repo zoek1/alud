@@ -57,4 +57,4 @@ https://www.loom.com/share/daa987b8bc7447a085faf6b73e6d2a36
 
 ## License
 
-See [LICENSE](LICENSE.md).
+See [LICENSE](LICENSE).
