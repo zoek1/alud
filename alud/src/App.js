@@ -29,7 +29,10 @@ import ReactJson from 'react-json-view'
 
 import ChartSelector from './components/chart-selector.js';
 
+import { NetworkType, DAppClient } from '@airgap/beacon-sdk';
+
 const GRAPHQL_ENDPOINT = 'https://dex.dipdup.net/v1/graphql'; // 'https://swapi-graphql.netlify.app/.netlify/functions/index',
+const TEZOS_RPC_URL = 'https://api.tez.ie/rpc/FLorencenet';
 
 const fetcher = async graphQLParams => {
   const data = await fetch(
@@ -85,8 +88,10 @@ const App = () => {
   const [story, setStory] = useState("# Awesome Tezos Story");
   const [value, setValue] = useState(0);
   const [hasError, setHasError] = useState(false);
+  const [address, setAddress] = useState('');
 
   const graphiQLRef = useRef(null);
+  const dAppClient = useRef(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -111,6 +116,25 @@ const App = () => {
       setSchema(buildClientSchema(result.data))
     })
   }, []);
+
+  const onLogin = async () => {
+    if (!dAppClient.current || address === '') {
+      dAppClient.current = new DAppClient({ name: 'Alud' });
+    }
+
+    try {
+      const permissions = await dAppClient.current.requestPermissions();
+      setAddress(permissions.address)
+    } catch (e) {
+      console.log('Failed to get address')
+    }
+  }
+
+  const onLogout = async () => {
+    dAppClient.current = null;
+    setAddress('')
+    
+  }
 
   useEffect(() => {
     if (filterQuery != '') {
@@ -146,7 +170,13 @@ const App = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Alud
         </Typography>
-        <Button color="inherit">Login</Button>
+	{ address === '' ?
+            <Button color="inherit" onClick={onLogin}>Login</Button> : <>
+              <Typography variant="p" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }} component="div" >
+	         {address} 
+                 <Button color="primary" sx={{ color: 'background.paper', paddingfLeft: 0, paddingRight: 0 }}  variant="outlined" size="small" onClick={onLogout}>Log out</Button>
+	      </Typography>
+       	    </>}
       </Toolbar>
     </AppBar>
     <Box className="gutter"  sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -154,7 +184,7 @@ const App = () => {
           <Tab style={{flexGrow: 1}} label="1. Query & Filter" {...a11yProps(0)} />
           <Tab style={{flexGrow: 1}} label="2. Configure Chart" {...a11yProps(1)} />
           <Tab style={{flexGrow: 1}} label="3. Write a Story" {...a11yProps(2)} />
-        <Button variant="outlined" startIcon={<SaveIcon />} onClick={onSave} >
+          <Button variant="outlined" startIcon={<SaveIcon />} onClick={onSave} >
           Save
         </Button>
       </Tabs>
