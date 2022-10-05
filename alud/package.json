@@ -25,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
     "react-markdown": "^8.0.3",
+    "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "rehype-sanitize": "^5.0.1",
     "stream-browserify": "^3.0.0",
